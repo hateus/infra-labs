@@ -1,26 +1,32 @@
 steps:
-- id: Build & Push 
-  name: gcr.io/cloud-builders/gcloud
-  args: 
-  - builds 
-  - submit 
-  - --tag 
-  - gcr.io/${PROJECT_ID}/${_SERVICE}:latest 
-  - ./${_SERVICE}
+- id: Preparing Container Image
+  name: 'gcr.io/kaniko-project/executor@sha256:8504bde9a9a8c9c4e9a4fe659703d265697a36ff13607b7669a4caa4407baa52'
+  dir: '${_SERVICE}/'
+  args:
+    - '--destination=${_FULL_PATH_IMAGE}'
+    - '--cache=true'
+    - '--cache-ttl=12h'
 
 - id: Deploy to Container
   name: gcr.io/cloud-builders/gcloud
   args:
-  - run 
-  - deploy 
-  - ${_SERVICE}
-  - --image=gcr.io/${PROJECT_ID}/${_SERVICE}:latest
-  - --platform 
-  - managed
-  - --allow-unauthenticated
-  - --region 
-  - <REGION>
-  - --vpc-connector 
-  - production-vpc
-  - --vpc-egress
-  - all-traffic
+    - 'run'
+    - 'deploy'
+    - '${_SERVICE}'
+    - '--image=${_FULL_PATH_IMAGE}'
+    - '--platform '
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--region'
+    - '${_REGION}'
+    - '--vpc-connector '
+    - '${_ENVIRONMENT}-vpc'
+    - '--vpc-egress'
+    - 'all-traffic'
+
+
+substitutions:
+  _REGISTRY_URL: us.gcr.io/$PROJECT_ID
+  _PROJECT: lab-16sz8D
+  _FULL_PATH_IMAGE: ${_REGISTRY_URL}/${_PROJECT}/${_SERVICE}:${_ENVIRONMENT}
+  _REGION: us-east1

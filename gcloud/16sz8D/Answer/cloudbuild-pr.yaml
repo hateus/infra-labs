@@ -1,26 +1,16 @@
 steps:
-- id: Build & Push 
-  name: gcr.io/cloud-builders/gcloud
-  args: 
-  - builds 
-  - submit 
-  - --tag 
-  - gcr.io/${PROJECT_ID}/${_SERVICE}:pr 
-  - ./${_SERVICE}
+- id: Install Dependencies
+  name: gcr.io/cloud-builders/npm
+  dir: '${_SERVICE}/'
+  args: ['install']
 
-- id: Deploy to Container
-  name: gcr.io/cloud-builders/gcloud
-  args:
-  - run 
-  - deploy 
-  - ${_SERVICE}
-  - --image=gcr.io/${PROJECT_ID}/${_SERVICE}:pr
-  - --platform 
-  - managed
-  - --allow-unauthenticated
-  - --region 
-  - <REGION>
-  - --vpc-connector 
-  - staging-vpc
-  - --vpc-egress
-  - all-traffic
+- id: Lint
+  name: gcr.io/cloud-builders/npm
+  dir: '${_SERVICE}/'
+  args: ['run', 'lint']
+
+
+substitutions:
+  _REGISTRY_URL: us.gcr.io/$PROJECT_ID
+  _PROJECT: lab-16sz8D
+  _FULL_PATH_IMAGE: ${_REGISTRY_URL}/${_PROJECT}/${_SERVICE}

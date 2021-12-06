@@ -1,13 +1,14 @@
-resource "google_cloudbuild_trigger" "apigateway" {
+resource "google_cloudbuild_trigger" "apigateway-push" {
   substitutions = {
     _SERVICE = "APIGateway"
+    _ENVIRONMENT = "production"
   }
 
   github {
     owner = var.github_owner
     name  = var.github_repository
-    pull_request {
-      branch = "^master"
+    push {
+      tag = ".*"
     }
   }
 
@@ -15,16 +16,17 @@ resource "google_cloudbuild_trigger" "apigateway" {
   filename       = "cloudbuild.yaml"
 }
 
-resource "google_cloudbuild_trigger" "ordersvc" {
+resource "google_cloudbuild_trigger" "ordersvc-push" {
   substitutions = {
     _SERVICE = "OrderService"
+    _ENVIRONMENT = "production"
   }
 
   github {
     owner = var.github_owner
     name  = var.github_repository
-    pull_request {
-      branch = "^master"
+    push {
+      tag = ".*"
     }
   }
 
@@ -32,16 +34,17 @@ resource "google_cloudbuild_trigger" "ordersvc" {
   filename       = "cloudbuild.yaml"
 }
 
-resource "google_cloudbuild_trigger" "productsvc" {
+resource "google_cloudbuild_trigger" "productsvc-push" {
   substitutions = {
     _SERVICE = "ProductService"
+    _ENVIRONMENT = "production"
   }
 
   github {
     owner = var.github_owner
     name  = var.github_repository
-    pull_request {
-      branch = "^master"
+    push {
+      tag = ".*"
     }
   }
 
@@ -49,16 +52,17 @@ resource "google_cloudbuild_trigger" "productsvc" {
   filename       = "cloudbuild.yaml"
 }
 
-resource "google_cloudbuild_trigger" "usersvc" {
+resource "google_cloudbuild_trigger" "usersvc-push" {
   substitutions = {
     _SERVICE = "UserService"
+    _ENVIRONMENT = "production"
   }
 
   github {
     owner = var.github_owner
     name  = var.github_repository
-    pull_request {
-      branch = "^master"
+    push {
+      tag = ".*"
     }
   }
 
