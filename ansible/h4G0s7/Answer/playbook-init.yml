@@ -1,0 +1,15 @@
+---
+- hosts: dev-server
+  user: ubuntu
+  become: yes
+  become_user: root
+  become_method: sudo
+  vars:
+    docker_user: devops
+    ssh_public_key: <ssh-public-key>
+  roles:
+    - role: docker.rootless
+
+- import_playbook: playbook-apply.yml
+  vars:
+    docker_user: devops

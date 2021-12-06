@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mysql-manager:
+    image: mysql/mysql-cluster:7.6.9-1.1.9-cluster
+    restart: always
+    networks:
+      db-network:
+        ipv4_address: 192.168.0.2
+    volumes:
+      - ./cnf/my.cnf:/etc/my.cnf
+      - ./cnf/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: ndb_mgmd
+
+  data-nodes-1:
+    image: mysql/mysql-cluster:7.6.9-1.1.9-cluster
+    restart: always
+    networks:
+      db-network:
+        ipv4_address: 192.168.0.3
+    volumes:
+      - db-data-nodes-1:/var/lib/mysql
+      - ./cnf/my.cnf:/etc/my.cnf
+      - ./cnf/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: ndbd
+    depends_on:
+      - mysql-manager
+
+  data-nodes-2:
+    image: mysql/mysql-cluster:7.6.9-1.1.9-cluster
+    restart: always
+    networks:
+      db-network:
+        ipv4_address: 192.168.0.4
+    volumes:
+      - db-data-nodes-2:/var/lib/mysql
+      - ./cnf/my.cnf:/etc/my.cnf
+      - ./cnf/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: ndbd
+    depends_on:
+      - mysql-manager
+
+  mysql-server:
+    image: mysql/mysql-cluster:7.6.9-1.1.9-cluster
+    restart: always
+    networks:
+      db-network:
+        ipv4_address: 192.168.0.10
+    volumes:
+      - ./cnf/my.cnf:/etc/my.cnf
+      - ./cnf/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: mysqld
+    env_file:
+      - .env.server
+    ports:
+      - 3306:3306
+    depends_on:
+      - data-nodes-1
+      - data-nodes-2
+
+
+networks:
+  db-network:
+    external: true
+
+volumes:
+  db-data-nodes-1:
+  db-data-nodes-2:

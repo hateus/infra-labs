@@ -1,0 +1,9 @@
+---
+- hosts: {{ lookup('env', 'SERVICE') }}-{{ lookup('env', 'ENVIRONMENT') }}
+  user: ubuntu
+  vars:
+    service: "{{ lookup('env', 'SERVICE') }}"
+    docker_network: "{{ lookup('env', 'DOCKER_NETWORK') }} | default('microservice', True)"
+    port: "{{ lookup('env', 'PORT') }}"
+  roles:
+    - role: deployment

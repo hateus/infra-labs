@@ -1,0 +1,11 @@
+---
+- name: Install Dependencies
+  yum:
+    name: 
+      - uidmap 
+      - curl
+      - dbus-user-session
+      - fuse-overlayfs
+      - slirp4netns
+      - acl
+    update_cache: yes

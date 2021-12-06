@@ -1,0 +1,12 @@
+[submodule "terraform/lWdzcL/Answer/basic-redis-chat-app-demo-nodejs"]
+	path = terraform/lWdzcL/Answer/basic-redis-chat-app-demo-nodejs
+	url = https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs
+[submodule "gcloud/16sz8D/Answer/Microservices-in-Nodejs"]
+	path = gcloud/16sz8D/Answer/Microservices-in-Nodejs
+	url = https://github.com/ShankyTiwari/Microservices-in-Nodejs/
+[submodule "ansible/alcaTu/Answer/microservices-demo"]
+	path = ansible/alcaTu/Answer/microservices-demo
+	url = https://github.com/GoogleCloudPlatform/microservices-demo/
+[submodule "ansible/73hSz9/Answer/microservice-app-example"]
+	path = ansible/73hSz9/Answer/microservice-app-example
+	url = https://github.com/elgris/microservice-app-example

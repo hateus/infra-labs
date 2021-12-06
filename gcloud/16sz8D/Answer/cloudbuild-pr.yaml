@@ -1,0 +1,26 @@
+steps:
+- id: Build & Push 
+  name: gcr.io/cloud-builders/gcloud
+  args: 
+  - builds 
+  - submit 
+  - --tag 
+  - gcr.io/${PROJECT_ID}/${_SERVICE}:pr 
+  - ./${_SERVICE}
+
+- id: Deploy to Container
+  name: gcr.io/cloud-builders/gcloud
+  args:
+  - run 
+  - deploy 
+  - ${_SERVICE}
+  - --image=gcr.io/${PROJECT_ID}/${_SERVICE}:pr
+  - --platform 
+  - managed
+  - --allow-unauthenticated
+  - --region 
+  - <REGION>
+  - --vpc-connector 
+  - staging-vpc
+  - --vpc-egress
+  - all-traffic

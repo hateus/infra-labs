@@ -1,0 +1,29 @@
+---
+- name: Copy Source Code to Server
+  copy:
+    src: "{{ service }}"
+    dest: /tmp/
+
+- name: Copy docker-compose.yml to Server
+  template:
+    src: docker-compose.yml.j2
+    dest: "/tmp/{{ service }}/docker-compose.yml"
+
+- name: Create Docker Network
+  docker_network:
+    name: "{{ docker_network }}"
+
+- name: Tear down existing services
+  docker_compose:
+    project_src: "/tmp/{{ service }}"
+    state: absent
+
+- name: Copy .env File to Service Directory
+  copy:
+    src: .env
+    dest: "/tmp/{{ service }}/.env"
+
+- name: Run `docker-compose up` again
+  docker_compose:
+    project_src: "/tmp/{{ service }}"
+    build: yes

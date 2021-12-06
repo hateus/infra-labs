@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgresql-master:
+    image: bitnami/postgresql:9.6.23
+    restart: always
+    env_file:
+      - .env.master
+    ports:
+      - 5432
+    volumes:
+      - postgresql_master_data:/bitnami/postgresql
+
+  postgresql-slave:
+    image: bitnami/postgresql:9.6.23
+    restart: always
+    env_file:
+      - .env.slave
+    ports:
+      - 5432:5432
+    deploy:
+      mode: replicated
+      replicas: 4
+    depends_on:
+      - postgresql-master
+
+
+networks:
+  db-network:
+    external: true
+
+volumes:
+  postgresql_master_data:

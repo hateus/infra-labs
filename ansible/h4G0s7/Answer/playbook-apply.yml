@@ -1,0 +1,32 @@
+---
+- name: Keeping Service is Active when Reboot
+  hosts: dev-server
+  user: devops
+
+  tasks:
+    - name: Install dockerd-rootless
+      command: "/home/{{ docker_user }}/dockerd-rootless-setuptool.sh"
+
+    - name: Change Listening Socket Location
+      lineinfile:
+        path: "/home/{{ docker_user }}/.config/systemd/user/docker.service"
+        regexp: "ExecStart=/home/{{ docker_user }}/bin/dockerd-rootless.sh"
+        line: "ExecStart=/home/{{ docker_user }}/bin/dockerd-rootless.sh --iptables=FALSE -H unix:///home/{{ docker_user }}/.docker/run/docker.sock"
+
+    - name: Enable and Start Docker Rootless
+      systemd:
+        name: docker.service
+        enabled: yes
+        state: started
+        scope: user
+        daemon_reload: yes
+
+    - name: Use Docker Rootless
+      lineinfile: 
+        dest: "/home/{{ docker_user }}/.bashrc"
+        line: "{{ item }}"
+        insertafter: "EOF" 
+        state: present
+      with_items:
+        - "export PATH=$PATH:/home/{{ docker_user }}/bin"
+        - "export DOCKER_HOST=unix:///home/{{ docker_user }}/.docker/run/docker.sock"

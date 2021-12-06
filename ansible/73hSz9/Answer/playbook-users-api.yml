@@ -1,0 +1,53 @@
+---
+- name: Build Container Image
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_bender:
+      base_image: openjdk:8-alpine
+      target_image: 
+        name: users-api
+        working_dir: /app
+        ports:
+          - "8083"
+        labels:
+          author: Michael Act
+          description: User data retriever
+          build_engine: buildah
+          runtime_engine: podman
+        cmd: java -jar ./target/users-api-0.0.1-SNAPSHOT.jar
+
+  pre_tasks:
+    - name: Install Python for Ansible runtime
+      raw: apk add python3
+
+    - name: Gather facts after Python runtime is available
+      setup:
+
+  post_tasks:
+    - name: Remove unneeded Python
+      raw: apk del python3
+
+    - name: Drop apk cache
+      raw: ash -c 'rm /var/cache/apk/*'
+
+  tasks:
+    - name: Copy package list file
+      copy:
+        src: "microservice-app-example/users-api/{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - src: pom.xml
+          dest: pom.xml
+        - src: mvnw
+          dest: mvnw
+        - src: .mvn/
+          dest: /app
+    - name: Resolve dependencies
+      command: sh mvnw dependency:resolve
+    - name: Copy source code
+      copy:
+        src: microservice-app-example/users-api/
+        dest: /app/
+    - name: Build application
+      command: sh mvnw install

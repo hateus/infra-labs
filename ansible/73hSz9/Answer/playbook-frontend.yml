@@ -1,0 +1,49 @@
+---
+- name: Build Container Image
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_bender:
+      base_image: node:8-alpine
+      target_image: 
+        name: frontend
+        working_dir: /app
+        ports: 
+          - "8080"
+        labels:
+          author: Michael Act
+          description: Presents a user-friendly interface
+          build_engine: buildah
+          runtime_engine: podman
+        cmd: npm start
+
+  pre_tasks:
+    - name: Install Python for Ansible runtime
+      raw: apk add python3
+
+    - name: Gather facts after Python runtime is available
+      setup:
+
+  post_tasks:
+    - name: Remove unneeded Python
+      raw: apk del python3
+
+    - name: Drop apk cache
+      raw: ash -c 'rm /var/cache/apk/*'
+
+  tasks:
+    - name: Copy package list file
+      copy: 
+        src: "microservice-app-example/frontend/{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - src: package.json
+          dest: package.json
+        - src: package-lock.json
+          dest: package-lock.json
+    - name: Download dependencies
+      command: npm ci --unsafe-perm
+    - name: Copy source code to application directory
+      copy:
+        src: microservice-app-example/frontend/
+        dest: /app/

@@ -1,0 +1,31 @@
+---
+- name: Build Container Image
+  hosts: all
+  vars:
+    ansible_bender:
+      base_image: python:3.6-alpine
+      target_image: 
+        name: log-message-processor
+        working_dir: /app
+        labels:
+          author: Michael Act
+          description: Log Message Processor
+          build_engine: buildah
+          runtime_engine: podman
+        cmd: python3 -u main.py
+
+  tasks:
+    - name: Install build-base
+      apk:
+        name: build-base
+        update_cache: no
+    - name: Copy package list file
+      copy:
+        src: microservice-app-example/log-message-processor/requirements.txt
+        dest: requirements.txt
+    - name: Download dependencies
+      command: pip3 install -r requirements.txt
+    - name: Copy source code
+      copy:
+        src: microservice-app-example/log-message-processor/
+        dest: /app/

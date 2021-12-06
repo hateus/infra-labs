@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mariadb-master:
+    image: bitnami/mariadb:10.4.21
+    restart: always
+    env_file:
+      - .env.master
+    ports:
+      - 3306
+    volumes:
+      - mariadb_master_data:/bitnami/mariadb
+
+  mariadb-slave:
+    image: bitnami/mariadb:10.4.21
+    restart: always
+    env_file:
+      - .env.slave
+    ports:
+      - 3306:3306
+    deploy:
+      mode: replicated
+      replicas: 4
+    depends_on:
+      - mariadb-master
+
+
+networks:
+  db-network:
+    external: true
+
+volumes:
+  mariadb_master_data:

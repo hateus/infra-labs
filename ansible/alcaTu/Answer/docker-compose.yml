@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  ansible-runner:
+    image: quay.io/ansible/ansible-runner
+    volumes:
+      - ./:/runner/
+    env:
+      - ENVIRONMENT
+      - SERVICE

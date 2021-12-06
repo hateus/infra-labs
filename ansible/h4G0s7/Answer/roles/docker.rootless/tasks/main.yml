@@ -1,0 +1,46 @@
+---
+- include_tasks: basic-{{ ansible_os_family }}.yml
+
+- name: Tune Kernel Parameter
+  sysctl: 
+    name: "{{ item.var }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - var: kernel.unprivileged_userns_clone
+      value: 1
+
+- name: Activate Overlay Storage Driver
+  modprobe:
+    name: overlay
+    params: 'permit_mounts_in_userns=1'
+
+- name: Add User
+  user:
+    name: "{{ docker_user }}"
+    shell: /bin/bash
+
+- name: Create ssh Directory in Home Directory
+  file: 
+    path: "/home/{{ docker_user }}/.ssh"
+    owner: "{{ docker_user }}"
+    mode: 0700
+    state: directory
+
+- name: Authorize our SSH key to Login
+  copy: 
+    dest: "/home/{{ docker_user }}/.ssh/authorized_keys"
+    owner: "{{ docker_user }}"
+    mode: 0700
+    content: "{{ ssh_public_key }}"
+
+- name: Download dockerd-rootless Script
+  uri:
+    url: https://get.docker.com/rootless
+    owner: "{{ docker_user }}"
+    dest: "/home/{{ docker_user }}/dockerd-rootless-setuptool.sh"
+    mode: 0700
+    follow_redirects: 'all'
+    status_code: [200, 304]

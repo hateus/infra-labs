@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  redis-master:
+    image: bitnami/redis-cluster:5.0.14
+    restart: always
+    env_file:
+      - .env.master
+    ports:
+      - 6379
+
+  redis-slave:
+    image: bitnami/redis-cluster:5.0.14
+    restart: always
+    env_file:
+      - .env.slave
+    ports:
+      - 6379:6379
+    deploy:
+      mode: replicated
+      replicas: 4
+    depends_on:
+      - redis-master
+
+
+networks:
+  db-network:
+    external: true
+
+volumes:
+  redis_master_data:

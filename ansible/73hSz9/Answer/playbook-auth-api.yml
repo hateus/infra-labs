@@ -1,0 +1,52 @@
+---
+- name: Build Container Image
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_bender:
+      base_image: golang:1.9-alpine
+      target_image: 
+        name: auth-api
+        working_dir: /go/src/app
+        ports:
+          - "8081"
+        labels:
+          author: Michael Act
+          description: Help authenticating user
+          build_engine: buildah
+          runtime_engine: podman
+        cmd: /app/auth-api
+
+  pre_tasks:
+    - name: Install Python for Ansible runtime
+      raw: apk add python3
+
+    - name: Gather facts after Python runtime is available
+      setup:
+
+  post_tasks:
+    - name: Remove unneeded Python
+      raw: apk del python3
+
+    - name: Drop apk cache
+      raw: ash -c 'rm /var/cache/apk/*'
+
+  tasks:
+    - name: Install git
+      apk:
+        name: git
+        update_cache: no
+    - name: Copy source code
+      copy:
+        src: microservice-app-example/auth-api/
+        dest: /go/src/app/
+    - name: Download dep
+      get_url:
+        url: https://raw.githubusercontent.com/golang/dep/master/install.sh
+        dest: ./install.sh
+    - name: Install dep
+      command: ash install.sh
+    - name: Download dependencies
+      command: dep ensure
+    - name: Build application
+      command: go build -o auth-api
