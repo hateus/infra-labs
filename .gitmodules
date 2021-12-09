@@ -10,3 +10,6 @@
 [submodule "ansible/73hSz9/Answer/microservice-app-example"]
 	path = ansible/73hSz9/Answer/microservice-app-example
 	url = https://github.com/elgris/microservice-app-example
+[submodule "gcloud/duwyI6/Answer/microservices-demo"]
+	path = gcloud/duwyI6/Answer/microservices-demo
+	url = https://github.com/michaelact/microservices-demo
