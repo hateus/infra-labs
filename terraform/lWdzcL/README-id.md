@@ -14,7 +14,6 @@
 ## Configuration Structure
 - Simpan `.tfstate` di bucket s3.
 - Enkripsi file tersebut
-- Penggunaan `resources` berbasis `modules`
 
 ## Goals
 PT. Mencari Michael telah membangun aplikasi web, kamu sebagai _AWS Expert_ ditugaskan untuk menyiapkan seluruh infrastruktur yang diperlukan, termasuk keamanan dasar dari sisi Cloud. 
@@ -23,7 +22,7 @@ Seluruh aplikasi yang ada sudah berbasis micro-service, dan ingin dibangun diata
 
 > Kenapa ECS?
 
-Ini merupakan layanan _native_ berasal dari AWS. Mereka mengatakan ECS itu _serverless_, jadi kita tidak perlu me-manage _EC2 instance_ seperti sebelumnya. 
+Ini merupakan layanan _native_ dari AWS dengan beberapa benefit. Jadi kita tidak perlu me-manage _EC2 instance_ seperti sebelumnya. 
 
 <p align="center">
   <img src="https://d1.awsstatic.com/re19/FargateonEKS/Product-Page-Diagram_Fargate%402x.a20fb2b15c2aebeda3a44dbbb0b10b82fb89aa6a.png"></img>
