@@ -1,5 +1,6 @@
 module "alb" {
-  source = "terraform-aws-modules/alb/aws"
+  source  = "terraform-aws-modules/alb/aws"
+  version = "6.4.0"
 
   name               = "production-lb-${random_pet.end_string.id}"
   load_balancer_type = "application"

@@ -40,10 +40,6 @@ module "worker-app-asg" {
       security_groups       = module.manager_app_sg.security_group_id
     },
   ]
-
-  placement = {
-    availability_zone = "us-east-1a"
-  }
 }
 
 module "worker-db-asg" {
@@ -88,8 +84,4 @@ module "worker-db-asg" {
       security_groups       = module.manager_db_sg.security_group_id
     },
   ]
-
-  placement = {
-    availability_zone = "us-east-1a"
-  }
 }

@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket  = "thisis-state"
+    bucket  = "aws-webinar-11-21"
     key     = "labs-tfstate"
     encrypt = true
     region  = "us-east-1"
