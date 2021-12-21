@@ -16,3 +16,6 @@
 [submodule "kubernetes/NDNhNj/Answer/Microservices-in-Nodejs"]
 	path = kubernetes/NDNhNj/Answer/Microservices-in-Nodejs
 	url = https://github.com/michaelact/Microservices-in-Nodejs
+[submodule "gcloud/Yzg3Nj/Answer/google-cloud-ops-agents-ansible"]
+	path = gcloud/Yzg3Nj/Answer/google-cloud-ops-agents-ansible
+	url = https://github.com/GoogleCloudPlatform/google-cloud-ops-agents-ansible

@@ -1,0 +1,16 @@
+---
+- hosts: michael-exploration
+  become: yes
+  user: ubuntu
+  roles:
+    - role: gcp.cloud-ops
+      vars:
+        agent_type: monitoring
+
+    - role: gcp.cloud-ops
+      vars:
+        agent_type: logging
+
+    - role: gcp.cloud-ops
+      vars:
+        agent_type: ops-agent
