@@ -1,4 +1,5 @@
-# Lab: NDNhNj
+# Lab: ZDVkZj
+
 
 Launch a Slack Command Webhook on Google Cloud Function, and then try to access our function from the Slack Command.
 
