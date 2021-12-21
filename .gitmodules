@@ -13,3 +13,6 @@
 [submodule "gcloud/duwyI6/Answer/microservices-demo"]
 	path = gcloud/duwyI6/Answer/microservices-demo
 	url = https://github.com/michaelact/microservices-demo
+[submodule "kubernetes/NDNhNj/Answer/Microservices-in-Nodejs"]
+	path = kubernetes/NDNhNj/Answer/Microservices-in-Nodejs
+	url = https://github.com/michaelact/Microservices-in-Nodejs
