@@ -1,0 +1,22 @@
+{
+  "name": "slack-test",
+  "version": "0.0.1",
+  "description": "Respond for a call from Slack Command",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hateus/infra-labs.git"
+  },
+  "keywords": [
+    "slack"
+  ],
+  "author": "Michael Act",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hateus/infra-labs/issues"
+  },
+  "homepage": "https://github.com/hateus/infra-labs#readme"
+}
