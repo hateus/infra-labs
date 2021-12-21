@@ -12,7 +12,7 @@ module "service_app" {
   task_container_port  = 4000
 
   task_container_environment = {
-    REDIS_ENDPOINT_URL = aws_elasticache_cluster.redis.cluster_address
+    REDIS_ENDPOINT_URL = module.redis-cache.endpoint
     REDIS_PASSWORD     = ""
   }
 
