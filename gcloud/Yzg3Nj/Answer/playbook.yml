@@ -1,0 +1,16 @@
+---
+- hosts: michael-exploration
+  become: yes
+  user: ubuntu
+  roles:
+    - role: google-cloud-ops-agents-ansible
+      vars:
+        agent_type: monitoring
+
+    - role: google-cloud-ops-agents-ansible
+      vars:
+        agent_type: logging
+
+    - role: google-cloud-ops-agents-ansible
+      vars:
+        agent_type: ops-agent
