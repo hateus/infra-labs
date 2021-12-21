@@ -3,14 +3,14 @@
   become: yes
   user: ubuntu
   roles:
-    - role: gcp.cloud-ops
+    - role: google-cloud-ops-agents-ansible
       vars:
         agent_type: monitoring
 
-    - role: gcp.cloud-ops
+    - role: google-cloud-ops-agents-ansible
       vars:
         agent_type: logging
 
-    - role: gcp.cloud-ops
+    - role: google-cloud-ops-agents-ansible
       vars:
         agent_type: ops-agent
